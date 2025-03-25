@@ -11,8 +11,8 @@
 ### インストール方法
 
 ```bash
-git clone https://github.com/yourusername/r-clinical-epi-env.git
-cd r-clinical-epi-env
+git clone https://github.com/SRWS-PSG/r-environment-for-researcher.git
+cd r-environment-for-researcher
 ./setup.sh
 ```
 
@@ -26,18 +26,18 @@ cd r-clinical-epi-env
 
 ## 統計原則
 
-`compiled_principles.md`ファイルには、臨床疫学研究における統計の原則がまとめられています。これらの原則は以下のソースから抽出されました：
+`principles/compiled_principles.md`ファイルには、臨床疫学研究における統計の原則がまとめられています。これらの原則は以下のソースから抽出されました：
 
-- STROBE statement
-- BMJ統計ガイドライン
-- JAMA著者向け指示
+- STROBE statement (`principles/strobe_principles.md`)
+- BMJ統計ガイドライン (`principles/bmj_principles.md`)
+- JAMA著者向け指示 (`principles/jama_principles.md`)
 
 ## 使用例
 
-`updated_example.R`スクリプトは、インストールされたパッケージを使用した包括的な解析例を提供します：
+`scripts/updated_example.R`スクリプトは、インストールされたパッケージを使用した包括的な解析例を提供します：
 
 ```bash
-Rscript updated_example.R
+Rscript scripts/updated_example.R
 ```
 
 このスクリプトには以下の例が含まれています：
@@ -50,7 +50,7 @@ Rscript updated_example.R
 
 ## トラブルシューティング
 
-一般的な問題と解決策については、`troubleshooting.md`ファイルを参照してください。
+一般的な問題と解決策については、`docs/troubleshooting.md`ファイルを参照してください。
 
 ## ライセンス
 
