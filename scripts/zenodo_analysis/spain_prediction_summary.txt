@@ -1,0 +1,17 @@
+Time Series Prediction Model for Spain's Hospital Occupancy
+=========================================================
+
+Data Information:
+- Country: Spain
+- Measure: Daily hospital occupancy
+- Training period: 18494 to 18991 
+- Test period: 18995 to 19258 
+- Training observations: 343 
+- Test observations: 102 
+
+Models Evaluated:
+1. ARIMA: Series: spain_ts  
+2. ETS: ETS(M,Ad,N)  
+3. TBATS
+
+Accuracy Metrics:
