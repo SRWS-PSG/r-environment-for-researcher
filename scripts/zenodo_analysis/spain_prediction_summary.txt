@@ -4,8 +4,8 @@ Time Series Prediction Model for Spain's Hospital Occupancy
 Data Information:
 - Country: Spain
 - Measure: Daily hospital occupancy
-- Training period: 18494 to 18991 
-- Test period: 18995 to 19258 
+- Training period: 2020-08-20 to 2021-12-30 
+- Test period: 2022-01-03 to 2022-09-23 
 - Training observations: 343 
 - Test observations: 102 
 
@@ -15,3 +15,15 @@ Models Evaluated:
 3. TBATS
 
 Accuracy Metrics:
+- ARIMA RMSE: 7562.682 
+- ETS RMSE: 18933.71 
+- TBATS RMSE: 23401.9 
+
+Best Model: ARIMA with RMSE = 7562.682 
+
+Files Generated:
+- spain_hospital_ts.png: Time series plot of training data
+- spain_decomposition.png: Decomposition of the time series
+- spain_forecast_comparison.png: Comparison of all model forecasts
+- spain_best_model_forecast.png: Best model forecast with prediction intervals
+- spain_forecast_results.csv: CSV file with all forecast results
