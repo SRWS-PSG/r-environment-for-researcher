@@ -34,10 +34,18 @@ cd r-environment-for-researcher
 
 ## 使用例
 
+### 基本的な解析例
 `scripts/updated_example.R`スクリプトは、インストールされたパッケージを使用した包括的な解析例を提供します：
 
 ```bash
 Rscript scripts/updated_example.R
+```
+
+### Zenodoデータ解析
+`scripts/zenodo_analysis/zenodo_data_analysis.R`スクリプトは、ECDCの病院・ICUデータを分析する実例を提供します：
+
+```bash
+Rscript scripts/zenodo_analysis/zenodo_data_analysis.R
 ```
 
 このスクリプトには以下の例が含まれています：
