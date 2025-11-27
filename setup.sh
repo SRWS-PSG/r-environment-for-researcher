@@ -39,7 +39,7 @@ sudo apt-get install -y --no-install-recommends \
 
 # Install R packages
 echo "Installing R packages..."
-sudo Rscript -e 'install.packages(c("tidyverse", "ggplot2", "dplyr", "gtsummary", "WeightIt"), repos="https://cloud.r-project.org/")'
+sudo Rscript -e 'install.packages(c("tidyverse", "ggplot2", "dplyr", "gtsummary", "WeightIt", "mice", "survival", "epiR"), repos="https://cloud.r-project.org/")'
 
 # Verify installation
 echo "Verifying installation..."
