@@ -25,17 +25,17 @@
 ## 作成・更新したファイル
 
 ### 解析スクリプト
-- `~/statistical_principles/updated_example.R` - すべてのパッケージを使用した包括的な解析例
+- `scripts/updated_example.R` - すべてのパッケージを使用した包括的な解析例
 
 ### ドキュメント
-- `~/statistical_principles/r_update_summary.md` - このアップデート報告書
-- `~/statistical_principles/troubleshooting.md` - トラブルシューティングガイド
+- `docs/r_update_summary.md` - このアップデート報告書
+- `docs/troubleshooting.md` - トラブルシューティングガイド
 
 ## 使用方法
 
 ### 例示スクリプトの実行
 ```bash
-Rscript ~/statistical_principles/updated_example.R
+Rscript scripts/updated_example.R
 ```
 
 ### スクリプトの内容

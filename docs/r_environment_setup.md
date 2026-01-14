@@ -42,7 +42,7 @@
 `verify_packages.R`スクリプトを実行して、すべてのパッケージが正しくインストールされているか確認できます：
 
 ```r
-Rscript ~/statistical_principles/verify_packages.R
+Rscript scripts/verify_packages.R
 ```
 
 ## 統計解析の原則

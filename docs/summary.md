@@ -25,44 +25,44 @@
 ## 作成したファイル
 
 ### 統計原則
-- `bmj_principles.md` - BMJから抽出した統計原則
-- `jama_principles.md` - JAMAから抽出した統計原則
-- `strobe_principles.md` - STROBE statementから抽出した統計原則
-- `compiled_principles.md` - 統合された統計原則
+- `principles/bmj_principles.md` - BMJから抽出した統計原則
+- `principles/jama_principles.md` - JAMAから抽出した統計原則
+- `principles/strobe_principles.md` - STROBE statementから抽出した統計原則
+- `principles/compiled_principles.md` - 統合された統計原則
 
 ### R環境と解析
-- `example_analysis.R` - 包括的な解析例
-- `simple_demo.R` - シンプルな解析デモ
-- `verify_packages.R` - パッケージ検証スクリプト
-- `check_installed_packages.R` - インストール済みパッケージ確認
+- `scripts/example_analysis.R` - 包括的な解析例
+- `scripts/simple_demo.R` - シンプルな解析デモ
+- `scripts/verify_packages.R` - パッケージ検証スクリプト
+- `scripts/check_installed_packages.R` - インストール済みパッケージ確認
 
 ### ドキュメント
 - `README.md` - プロジェクト概要
-- `r_environment_setup.md` - R環境セットアップガイド
-- `r_usage_examples.md` - R統計解析の実践例
-- `iptw_note.md` - WeightItパッケージについての注記
-- `troubleshooting.md` - トラブルシューティングガイド
+- `docs/r_environment_setup.md` - R環境セットアップガイド
+- `docs/r_usage_examples.md` - R統計解析の実践例
+- `docs/iptw_note.md` - WeightItパッケージについての注記
+- `docs/troubleshooting.md` - トラブルシューティングガイド
 
 ## 使用方法
 
 1. **統計原則の参照**
    ```
-   less ~/statistical_principles/compiled_principles.md
+   less principles/compiled_principles.md
    ```
 
 2. **パッケージの検証**
    ```
-   Rscript ~/statistical_principles/verify_packages.R
+   Rscript scripts/verify_packages.R
    ```
 
 3. **サンプル解析の実行**
    ```
-   Rscript ~/statistical_principles/simple_demo.R
+   Rscript scripts/simple_demo.R
    ```
 
 4. **詳細な解析例の確認**
    ```
-   less ~/statistical_principles/example_analysis.R
+   less scripts/example_analysis.R
    ```
 
 ## 注意事項
