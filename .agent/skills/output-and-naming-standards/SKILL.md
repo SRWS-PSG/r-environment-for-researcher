@@ -8,6 +8,34 @@ description: Enforces output formats, file naming, workflow sequencing, coding s
 - Save figures in both PNG (300 dpi) and PDF formats; call `ggsave()` twice with identical size and theme.
 - Store outputs under the analysis folder; keep filenames descriptive and consistent.
 
+## Figure saving best practices
+
+- For standard ggplot2 objects: use `ggsave()` twice (PNG and PDF).
+- **IMPORTANT**: For `survminer::ggsurvplot()` objects, `ggsave()` does NOT work correctly because ggsurvplot returns a list, not a ggplot object. Use this pattern instead:
+
+```r
+# Correct way to save ggsurvplot output
+p <- ggsurvplot(fit, data = df, ...)
+
+# Save as PNG
+png("output.png", width = 10, height = 8, units = "in", res = 300)
+print(p)
+dev.off()
+
+# Save as PDF
+pdf("output.pdf", width = 10, height = 8)
+print(p)
+dev.off()
+```
+
+- Do NOT use: `ggsave("file.png", print(p))` — this creates empty or corrupted files.
+
+## Windows encoding issues
+
+- Avoid Japanese text in R script output when running on Windows with PowerShell, as the `>` redirect uses CP932/Shift-JIS encoding which corrupts UTF-8 Japanese text.
+- Use English for all `cat()` and `print()` messages in scripts.
+- HTML output files (gt, gtsummary) handle UTF-8 correctly and can contain Japanese.
+
 ## File naming patterns
 
 - Data processing: `[NN]_<verb>_data.R` (e.g., `01_import_data.R`).
