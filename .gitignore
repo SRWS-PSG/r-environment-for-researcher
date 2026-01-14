@@ -1,0 +1,16 @@
+# R session junk
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+
+# OS junk
+.DS_Store
+
+# Logs
+wget-log*
+
+# Private data (never commit)
+data/private/
+data/raw_private/
+
