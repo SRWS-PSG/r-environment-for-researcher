@@ -10,29 +10,99 @@
 
 ## リポジトリ構造（よく触る場所）
 
-- `principles/`：臨床疫学研究の統計原則（最重要）
+-`principles/`：臨床疫学研究の統計原則（最重要）
 
-- `docs/`：環境・使い方・注意点・トラブルシューティング
+-`docs/`：環境・使い方・注意点・トラブルシューティング
 
-- `scripts/`：解析スクリプトと実例（`zenodo_analysis/`, `plos_analysis/` など）
+-`scripts/`：解析スクリプトと実例（`zenodo_analysis/`, `plos_analysis/` など）
 
-- `data/`：サンプル/公開データ置き場（機密データは置かない）
+-`data/`：サンプル/公開データ置き場（機密データは置かない）
 
 ## まず参照するドキュメント（優先順）
 
-1. `principles/compiled_principles.md`（推定値+CI、欠測、二値化回避、多重比較、クラスタリング等）
+1.`principles/compiled_principles.md`（推定値+CI、欠測、二値化回避、多重比較、クラスタリング等）
 
-2. `docs/r_usage_examples.md`（代表的な解析の形）
+2.`docs/r_usage_examples.md`（代表的な解析の形）
 
-3. `docs/iptw_note.md`（`iptw`ではなく `WeightIt` を使う理由と注意）
+3.`docs/iptw_note.md`（`iptw`ではなく `WeightIt` を使う理由と注意）
 
-4. `docs/troubleshooting.md`（環境・パッケージ・実行エラーの対処）
+4.`docs/troubleshooting.md`（環境・パッケージ・実行エラーの対処）
 
-5. `docs/summary.md`, `docs/r_environment_setup.md`, `docs/r_update_summary.md`（全体像と注意点）
+5.`docs/summary.md`, `docs/r_environment_setup.md`, `docs/r_update_summary.md`（全体像と注意点）
 
 > [!NOTE]
 
 > 一部ドキュメントに `~/statistical_principles/...` のような古いパス表記が出る場合は、基本的にこのリポジトリ内のパス（例：`scripts/...`）に読み替えてください。
+
+## スキル（再利用可能なスクリプト）
+
+解析をゼロから書き始めず、既存スクリプトをテンプレとして再利用します（必要に応じて `scripts/<analysis_name>/` にコピーして編集）。
+
+### 基本スキル
+
+| スクリプト | 説明 | 使用パッケージ |
+|-----------|------|---------------|
+| `scripts/updated_example.R` | 包括的な臨床疫学解析の例。記述統計、可視化、回帰分析、傾向スコア解析を含む | tidyverse, ggplot2, gtsummary, WeightIt |
+| `scripts/simple_demo.R` | パッケージの基本使用法のデモ | tidyverse, gtsummary |
+| `scripts/verify_packages.R` | パッケージのインストール確認 | - |
+
+### 高度な解析スキル
+
+#### PLOS Analysis（生存分析）：`scripts/plos_analysis/`
+
+| スクリプト | 説明 |
+|-----------|------|
+| `scripts/plos_analysis/cox_model_analysis.R` | Cox比例ハザードモデルによる生存分析 |
+| `scripts/plos_analysis/fixed_cox_analysis.R` | 修正版Cox分析（多変量調整） |
+| `scripts/plos_analysis/data_exploration.R` | データ探索と前処理 |
+
+#### Zenodo Analysis（時系列予測）：`scripts/zenodo_analysis/`
+
+| スクリプト | 説明 |
+|-----------|------|
+| `scripts/zenodo_analysis/zenodo_data_analysis.R` | ECDCデータを用いた記述統計・可視化 |
+| `scripts/zenodo_analysis/spain_prediction_model.R` | 時系列予測モデル（ARIMA等） |
+
+## 統計原則ドキュメント（`principles/`）
+
+最優先は `principles/compiled_principles.md`（上の「まず参照するドキュメント（優先順）」参照）。
+
+| ファイル | 内容 |
+|---------|------|
+| `principles/strobe_principles.md` | STROBE statementからの統計原則 |
+| `principles/bmj_principles.md` | BMJ統計ガイドライン |
+| `principles/jama_principles.md` | JAMA著者向け統計指示 |
+
+## エージェント利用ガイド（スクリプト選択）
+
+### 解析タスクへの対応
+
+1. **新しい臨床疫学解析を行う場合**
+   - まず `principles/compiled_principles.md` を参照し、統計原則を確認
+   - `scripts/updated_example.R` をテンプレートとして活用
+   - 解析の分割・保存ルールは「新規解析追加のワークフロー」も参照
+
+2. **生存分析を行う場合**
+   - `scripts/plos_analysis/fixed_cox_analysis.R` を参照
+   - Cox比例ハザードモデル、Kaplan-Meier曲線の作成例あり
+
+3. **傾向スコア解析を行う場合**
+   - `scripts/updated_example.R` のExample 4を参照
+   - WeightItパッケージによるIPTW（逆確率重み付け）の実装例
+
+4. **時系列データ分析を行う場合**
+   - `scripts/zenodo_analysis/spain_prediction_model.R` を参照
+
+### 使用可能なRパッケージ（主要）
+
+| パッケージ | 用途 |
+|-----------|------|
+| tidyverse | データ操作の基盤 |
+| ggplot2 | データ可視化 |
+| dplyr | データ変換・集計 |
+| gtsummary | 出版品質の統計表作成 |
+| WeightIt | 傾向スコア・逆確率重み付け |
+| survival | 生存分析 |
 
 ## Human-in-the-loop 計画の立て方（必須）
 
@@ -40,10 +110,10 @@
 
 ### 1) 計画に必ず書く合意ポイント
 
-- **データ辞書**：実データの `names()` / `str()` を確認し、論文表記との**対応表**を作る（例：MBP=MAP、RRT=CRRT）。
-- **主要変数定義**：アウトカムのイベント・観察時間・検閲定義、参照カテゴリ、単位・変換（例：BMI区分、中心化）。
-- **モデル仕様**：使う共変量・除外ルール（例：VIF閾値、SAPSIIの扱い）を**式として**明記。
-- **出力仕様**：ファイル名と形式（PNG+PDF）、表の列名・並び順を明記。
+-**データ辞書**：実データの `names()` / `str()` を確認し、論文表記との**対応表**を作る（例：MBP=MAP、RRT=CRRT）。
+-**主要変数定義**：アウトカムのイベント・観察時間・検閲定義、参照カテゴリ、単位・変換（例：BMI区分、中心化）。
+-**モデル仕様**：使う共変量・除外ルール（例：VIF閾値、SAPSIIの扱い）を**式として**明記。
+-**出力仕様**：ファイル名と形式（PNG+PDF）、表の列名・並び順を明記。
 
 ### 2) ユーザー確認ゲート（HITL）
 
@@ -100,7 +170,7 @@
 
 ### 2) 実データを触る前の最低限チェック（勝手に省略しない）
 
-- `n`（行数）と主要イベント数（アウトカムが二値/生存なら特に）
+-`n`（行数）と主要イベント数（アウトカムが二値/生存なら特に）
 
 - 変数の型（数値/因子/日付）と単位
 - 欠測のパターン（列ごとの欠測率、主要変数の欠測）
@@ -132,7 +202,7 @@
 
 - 実行コマンドとエラーメッセージ全文を確認（省略しない）
 
-- `sessionInfo()`、`packageVersion()`、データの `str()`/`names()` で状況を切り分け
+-`sessionInfo()`、`packageVersion()`、データの `str()`/`names()` で状況を切り分け
 
 - 関数の衝突が疑わしい場合は `pkg::fun()` で明示（詳細は `docs/troubleshooting.md`）
 
@@ -140,9 +210,9 @@
 
 - このリポジトリでは `iptw` の代替として `WeightIt` を使用（`docs/iptw_note.md`）。
 
-- **極端な傾向スコア（0/1付近）や極端な重み**が出る場合は、推定が不安定になりやすい：ユーザーに状況を報告し、トリミング等の選択肢を提示する（`docs/troubleshooting.md`にも例あり）。
+-**極端な傾向スコア（0/1付近）や極端な重み**が出る場合は、推定が不安定になりやすい：ユーザーに状況を報告し、トリミング等の選択肢を提示する（`docs/troubleshooting.md`にも例あり）。
 
-- **バランス確認**（例：`WeightIt::summary()`、可能なら `cobalt` で `bal.tab()`/`love.plot()`）を必ず行い、結果（SMDなど）を添える。
+-**バランス確認**（例：`WeightIt::summary()`、可能なら `cobalt` で `bal.tab()`/`love.plot()`）を必ず行い、結果（SMDなど）を添える。
 
 - 観察研究では「因果効果」と言い切らない。前提（交絡の取り切れなさ等）を明記する（`principles/compiled_principles.md`参照）。
 
@@ -156,35 +226,43 @@
 
 ## コーディング規約
 
-- **スタイル**：tidyverse style guide（snake_case、パイプは `|>` または `%>%` のどちらかに統一）
+-**スタイル**：tidyverse style guide（snake_case、パイプは `|>` または `%>%` のどちらかに統一）
 
-- **コメント**：日本語（高校生にも分かる、短い言葉）
+-**コメント**：日本語（高校生にも分かる、短い言葉）
 
-- **再現性**：乱数シード、主要パッケージ、必要なら `sessionInfo()` を残す
+-**再現性**：乱数シード、主要パッケージ、必要なら `sessionInfo()` を残す
 
-- **外部依存**：新しいパッケージ追加が必要なら先に相談（ネットワーク制限の可能性がある）
+-**外部依存**：新しいパッケージ追加が必要なら先に相談（ネットワーク制限の可能性がある）
 
-- **パッケージ**：最低限 `tidyverse`, `ggplot2`, `dplyr`, `gtsummary`, `WeightIt` は利用前提（`scripts/verify_packages.R`）。`docs/r_usage_examples.md` の追加パッケージは環境に無いことがあるため、代替案提示かインストール可否の確認を行う
+-**パッケージ**：主要パッケージは「使用可能なRパッケージ（主要）」参照。環境の確認は `scripts/verify_packages.R`。`docs/r_usage_examples.md` の追加パッケージは環境に無いことがあるため、代替案提示かインストール可否の確認を行う
 
 - **スクリプトの整理**（重要）：試行錯誤の過程で一時的なファイルや別バージョンのスクリプト（例: `_v2`, `_simple` など）が作成された場合、タスク完了時に必ずこれらを整理・削除する。最終的に正しく動作するコードのみを残し、実行順序が分かるようにファイル名を連番で統一する（`01_...`, `02_...`）。
 
 ## ファイル命名規則（推奨）
 
 | カテゴリ | パターン | 例 |
+
 |---------|---------|-----|
+
 | データ処理 | `[番号]_[動詞]_data.R` | `01_import_data.R`, `02_clean_data.R` |
+
 | 解析 | `[番号]_[解析種類]_analysis.R` | `03_descriptive_analysis.R` |
+
 | 可視化 | `[番号]_create_[対象].R` | `05_create_figures.R` |
+
 | レポート | `[番号]_generate_report.R` | `06_generate_report.R` |
+
 | ユーティリティ | `utils_[機能].R` | `utils_helper_functions.R` |
+
 | 出力図（PNG） | `[対象]_[種類].png` | `survival_curve.png` |
+
 | 出力図（PDF） | `[対象]_[種類].pdf` | `survival_curve.pdf` |
 
 ## 新規解析追加のワークフロー（推奨）
 
-1. `scripts/<analysis_name>/` を作成（例：`scripts/new_analysis/`）
+1.`scripts/<analysis_name>/` を作成（例：`scripts/new_analysis/`）
 
-2. `00_readme.md`（目的・データ・アウトカム・主要解析）か `report.md` を最初に作る
+2.`00_readme.md`（目的・データ・アウトカム・主要解析）か `report.md` を最初に作る
 
 3. 小さく動く `01_import_data.R` → `02_clean_data.R` → `03_descriptive_analysis.R` の順に増やす
 4. 出力（表/図/中間CSV）は同フォルダ内に保存し、ファイル名で内容が分かるようにする
