@@ -18,6 +18,44 @@ description: Applies statistical guardrails, required checks, and non-negotiable
 - Summarize missingness by column and for key variables.
 - Scan for impossible values (e.g., age < 0, extreme BMI, sentinel codes).
 
+## Required checks for custom functions
+
+- If custom functions are created, write unit tests using `testthat` or equivalent.
+- Test edge cases: missing data, empty inputs, boundary values.
+- Document test results before using functions in main analysis.
+
+## Model assumption check enforcement
+
+- Model assumption checks are governed by Gate 2B agreement.
+- **必須チェック**: Always perform. If NG, do not proceed to interpretation. Return to Gate 2B.
+- **推奨チェック**: Perform when pre-agreed triggers occur. Route results to Gate 2C.
+
+### Package availability
+
+The following packages enhance assumption checks but are not mandatory:
+- `car` (VIF calculation) — if unavailable, compute manually or note limitation
+- `survminer` (cox.zph visualization) — if unavailable, use base `plot()`
+- `performance` (model diagnostics) — optional enhancement
+
+Before using these packages, check availability:
+
+```r
+if (requireNamespace("car", quietly = TRUE)) {
+  car::vif(model)
+} else {
+  message("car package not available; VIF check skipped or use manual calculation")
+}
+```
+
+### Model-specific checks quick reference
+
+| Model Type | 必須チェック | 推奨チェック |
+|------------|-------------|-------------|
+| Linear Regression | Linearity, Homoscedasticity, Residual normality | VIF |
+| Logistic Regression | Outcome coding, Convergence/separation, Influential points | Linearity in logit, Calibration |
+| Cox Regression | Proportional hazards (`cox.zph()`) | Functional form, Influential points |
+| IPTW | PS overlap, Weight distribution, Balance (SMD) | Trimming sensitivity, Double robust |
+
 ## Default low-risk workflow
 
 - Start with descriptive summaries (e.g., `tbl_summary()` overall or by group).

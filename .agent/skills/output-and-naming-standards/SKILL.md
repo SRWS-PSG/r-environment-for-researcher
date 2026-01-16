@@ -36,6 +36,36 @@ dev.off()
 - Use English for all `cat()` and `print()` messages in scripts.
 - HTML output files (gt, gtsummary) handle UTF-8 correctly and can contain Japanese.
 
+## Session information documentation
+
+At the start of each analysis, record and save environment information to the **analysis folder**:
+
+```r
+# Record session info to analysis folder
+output_dir <- "scripts/<analysis_name>/output"
+if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+
+sink(file.path(output_dir, "session_info.txt"))
+cat("Analysis Date:", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "\n\n")
+cat("R Version:", R.version.string, "\n")
+cat("Platform:", R.version$platform, "\n\n")
+
+# RStudio version (with existence check)
+if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
+  cat("RStudio Version:", as.character(rstudioapi::versionInfo()$version), "\n\n")
+}
+
+cat("Loaded Packages:\n")
+pkgs <- sort(loadedNamespaces())
+for (pkg in pkgs) {
+  cat(sprintf("  %s %s\n", pkg, as.character(packageVersion(pkg))))
+}
+sink()
+```
+
+- Include session info in the final report or as a separate file.
+- Output path should be within the analysis folder (e.g., `scripts/<analysis_name>/output/session_info.txt`).
+
 ## File naming patterns
 
 - Data processing: `[NN]_<verb>_data.R` (e.g., `01_import_data.R`).
