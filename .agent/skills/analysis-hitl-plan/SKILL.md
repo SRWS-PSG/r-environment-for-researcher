@@ -36,6 +36,9 @@ Phase 2: Data Analyses
 
 ### Gate 0B: Data Cleaning Plan ✅
 
+> [!TIP]
+> 実装の詳細は `data-wrangling` スキルを参照。
+
 - Map variable names: list `names()` and `str()` and map to paper terms (e.g., MBP = MAP).
 - Define inclusion/exclusion criteria with expected sample size at each step.
 - Specify missing data handling rules.

@@ -40,3 +40,9 @@ description: Selects and reuses existing scripts and docs as templates for commo
 - Start with `00_readme.md` or `report.md`.
 - Build scripts in order: `01_import_data.R`, `02_clean_data.R`, `03_descriptive_analysis.R`.
 - Keep outputs inside the same folder and follow naming standards.
+
+## Data wrangling scripts
+
+- `01_import_data.R` - Data import and encoding handling.
+- `02_clean_data.R` - Type conversion, missingness handling, outlier checks.
+- For details, see the `data-wrangling` skill.

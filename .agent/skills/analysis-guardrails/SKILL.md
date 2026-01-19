@@ -13,6 +13,9 @@ description: Applies statistical guardrails, required checks, and non-negotiable
 
 ## Required checks before modeling
 
+> [!NOTE]
+> これらのチェックは `data-wrangling` スキルのステップ完了後に実施。
+
 - Confirm row counts and event counts for primary outcomes.
 - Check variable types (numeric, factor, date) and units.
 - Summarize missingness by column and for key variables.

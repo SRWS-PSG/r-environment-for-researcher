@@ -31,6 +31,7 @@
 ## Skills (Antigravity)
 
 - `.agent/skills/analysis-intake/SKILL.md` - Collects study goals, design, variables, missingness, and reporting needs before starting clinical epidemiology analysis.
+- `.agent/skills/data-wrangling/SKILL.md` - Guides data import, type conversion, missing data diagnosis, and cleaning for Gate 0B implementation.
 - `.agent/skills/analysis-hitl-plan/SKILL.md` - Defines the human-in-the-loop analysis plan with data dictionary mapping, variable definitions, model specs, and output agreements.
 - `.agent/skills/analysis-guardrails/SKILL.md` - Applies statistical guardrails, required checks, and non-negotiable prohibitions for clinical epidemiology analyses.
 - `.agent/skills/analysis-templates/SKILL.md` - Selects and reuses existing scripts and docs as templates for common analysis types (descriptive, survival, IPTW, time series).
