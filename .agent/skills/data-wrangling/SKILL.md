@@ -62,15 +62,26 @@ df$score[df$score == -1] <- NA
 
 - Missingness rate: `colMeans(is.na(df))`
 
-Optional visualization (only if available):
+Optional visualization (prefer ggplot2; use base R only if ggplot2 is unavailable):
 
 ```r
 if (requireNamespace("naniar", quietly = TRUE)) {
   naniar::vis_miss(df)
 } else {
-  # Base R alternative
   missing_pct <- colMeans(is.na(df)) * 100
-  barplot(missing_pct, las = 2, main = "Missing Data by Variable")
+  missing_df <- data.frame(
+    variable = names(missing_pct),
+    percent = as.numeric(missing_pct)
+  )
+  if (requireNamespace("ggplot2", quietly = TRUE)) {
+    ggplot2::ggplot(missing_df, ggplot2::aes(x = variable, y = percent)) +
+      ggplot2::geom_col() +
+      ggplot2::coord_flip() +
+      ggplot2::labs(title = "Missing Data by Variable", x = NULL, y = "Percent")
+  } else {
+    # Base R fallback
+    barplot(missing_pct, las = 2, main = "Missing Data by Variable")
+  }
 }
 
 if (requireNamespace("visdat", quietly = TRUE)) {
@@ -80,7 +91,7 @@ if (requireNamespace("visdat", quietly = TRUE)) {
 
 ## 5. Data cleaning
 
-- Outlier detection: boxplot, z-scores, IQR.
+- Outlier detection: prefer ggplot2 boxplot; use base R boxplot if ggplot2 is unavailable; z-scores, IQR.
 - Range checks: logically impossible values (e.g., age < 0, BMI > 100).
 - Duplicate rows: `duplicated()`.
 - Confirm thresholds and rules with the user before applying changes.

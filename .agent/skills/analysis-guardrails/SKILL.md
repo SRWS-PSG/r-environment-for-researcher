@@ -37,7 +37,7 @@ description: Applies statistical guardrails, required checks, and non-negotiable
 
 The following packages enhance assumption checks but are not mandatory:
 - `car` (VIF calculation) — if unavailable, compute manually or note limitation
-- `survminer` (cox.zph visualization) — if unavailable, use base `plot()`
+- `survminer` (cox.zph visualization) — prefer ggplot-based outputs when available; if unavailable, use base `plot()`
 - `performance` (model diagnostics) — optional enhancement
 
 Before using these packages, check availability:

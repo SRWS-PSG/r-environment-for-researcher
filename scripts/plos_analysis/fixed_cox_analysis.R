@@ -7,9 +7,13 @@ library(tidyverse)
 library(readxl)
 library(survival)
 library(gtsummary)
+library(here)
+
+# Set seed for reproducibility
+set.seed(123)
 
 # Set working directory and file path
-data_path <- "~/r-environment-for-researcher/data/Renamed_660b8.xls"
+data_path <- here("data", "Renamed_660b8.xls")
 
 # Load the data
 cat("Loading data from:", data_path, "\n")
@@ -333,7 +337,7 @@ hr_summary <- all_hr_tables %>%
   rename(`Hazard Ratio (95% CI)` = HR_CI, `P-value` = p_value_formatted)
 
 # Save the hazard ratio summary table to CSV
-write.csv(hr_summary, "~/r-environment-for-researcher/scripts/plos_analysis/hazard_ratio_summary.csv", 
+write.csv(hr_summary, here("scripts", "plos_analysis", "hazard_ratio_summary.csv"), 
           row.names = FALSE)
 
 # Create Kaplan-Meier survival curves
@@ -377,33 +381,67 @@ print(survdiff(surv_cv ~ poor_srh, data = cohort_data_complete))
 cat("\nLog-rank test for self-rated health status (non-CV mortality):\n")
 print(survdiff(surv_noncv ~ poor_srh, data = cohort_data_complete))
 
-# Save basic Kaplan-Meier plots
-png("~/r-environment-for-researcher/scripts/plos_analysis/km_illiterate_all.png", 
-    width = 800, height = 600)
-plot(km_illiterate_all, 
-     main = "Kaplan-Meier Survival Curves by Literacy Status (All-cause Mortality)",
-     xlab = "Time", ylab = "Survival Probability",
-     lty = c(1, 2), col = c("blue", "red"),
-     mark.time = FALSE)
-legend("bottomleft", legend = c("Literate", "Illiterate"), 
-       lty = c(1, 2), col = c("blue", "red"))
-dev.off()
+save_km_plot <- function(fit, data, file_stem, title, legend_labels) {
+  if (requireNamespace("survminer", quietly = TRUE)) {
+    plot_obj <- survminer::ggsurvplot(
+      fit,
+      data = data,
+      conf.int = FALSE,
+      risk.table = FALSE,
+      legend.labs = legend_labels,
+      ggtheme = ggplot2::theme_minimal(),
+      title = title,
+      xlab = "Time",
+      ylab = "Survival Probability"
+    )
+    png(paste0(file_stem, ".png"), width = 10, height = 8, units = "in", res = 300)
+    print(plot_obj)
+    dev.off()
+    pdf(paste0(file_stem, ".pdf"), width = 10, height = 8)
+    print(plot_obj)
+    dev.off()
+  } else {
+    draw_base_plot <- function() {
+      plot(
+        fit,
+        main = title,
+        xlab = "Time",
+        ylab = "Survival Probability",
+        lty = c(1, 2),
+        col = c("blue", "red"),
+        mark.time = FALSE
+      )
+      legend("bottomleft", legend = legend_labels, lty = c(1, 2), col = c("blue", "red"))
+    }
+    png(paste0(file_stem, ".png"), width = 10, height = 8, units = "in", res = 300)
+    draw_base_plot()
+    dev.off()
+    pdf(paste0(file_stem, ".pdf"), width = 10, height = 8)
+    draw_base_plot()
+    dev.off()
+  }
+}
 
-png("~/r-environment-for-researcher/scripts/plos_analysis/km_srh_all.png", 
-    width = 800, height = 600)
-plot(km_srh_all, 
-     main = "Kaplan-Meier Survival Curves by Self-rated Health Status (All-cause Mortality)",
-     xlab = "Time", ylab = "Survival Probability",
-     lty = c(1, 2), col = c("blue", "red"),
-     mark.time = FALSE)
-legend("bottomleft", legend = c("Good/Excellent SRH", "Poor/Regular SRH"), 
-       lty = c(1, 2), col = c("blue", "red"))
-dev.off()
+save_km_plot(
+  km_illiterate_all,
+  cohort_data_complete,
+  here("scripts", "plos_analysis", "km_illiterate_all"),
+  "Kaplan-Meier Survival Curves by Literacy Status (All-cause Mortality)",
+  c("Literate", "Illiterate")
+)
+
+save_km_plot(
+  km_srh_all,
+  cohort_data_complete,
+  here("scripts", "plos_analysis", "km_srh_all"),
+  "Kaplan-Meier Survival Curves by Self-rated Health Status (All-cause Mortality)",
+  c("Good/Excellent SRH", "Poor/Regular SRH")
+)
 
 # Create a summary report
 cat("\nCreating summary report...\n")
 
-sink("~/r-environment-for-researcher/scripts/plos_analysis/analysis_summary.md")
+sink(here("scripts", "plos_analysis", "analysis_summary.md"))
 cat("# Reproduction Analysis of \"Self-rated health status and illiteracy as death predictors\"\n\n")
 cat("## Study Overview\n")
 cat("- **Original Article**: Self-rated health status and illiteracy as death predictors in a Brazilian cohort (PLOS ONE, 2018)\n")
@@ -494,7 +532,9 @@ cat("- All analyses were performed using R with the survival package\n\n")
 cat("## Files Generated\n\n")
 cat("- `hazard_ratio_summary.csv`: Summary of all hazard ratios and confidence intervals\n")
 cat("- `km_illiterate_all.png`: Kaplan-Meier curves by literacy status for all-cause mortality\n")
+cat("- `km_illiterate_all.pdf`: Kaplan-Meier curves by literacy status for all-cause mortality\n")
 cat("- `km_srh_all.png`: Kaplan-Meier curves by self-rated health status for all-cause mortality\n")
+cat("- `km_srh_all.pdf`: Kaplan-Meier curves by self-rated health status for all-cause mortality\n")
 sink()
 
 cat("\nAnalysis complete. Results saved to scripts/plos_analysis directory.\n")

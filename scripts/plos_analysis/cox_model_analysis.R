@@ -7,9 +7,13 @@ library(tidyverse)
 library(readxl)
 library(survival)
 library(gtsummary)
+library(here)
+
+# Set seed for reproducibility
+set.seed(123)
 
 # Set working directory and file path
-data_path <- "~/r-environment-for-researcher/data/Renamed_660b8.xls"
+data_path <- here("data", "Renamed_660b8.xls")
 
 # Load the data
 cat("Loading data from:", data_path, "\n")
@@ -309,7 +313,7 @@ hr_summary <- all_hr_tables %>%
   rename(`Hazard Ratio (95% CI)` = HR_CI, `P-value` = p_value_formatted)
 
 # Save the hazard ratio summary table to CSV
-write.csv(hr_summary, "~/r-environment-for-researcher/scripts/plos_analysis/hazard_ratio_summary.csv", 
+write.csv(hr_summary, here("scripts", "plos_analysis", "hazard_ratio_summary.csv"), 
           row.names = FALSE)
 
 # Create Kaplan-Meier survival curves
@@ -354,7 +358,7 @@ cat("\nLog-rank test for self-rated health status (non-CV mortality):\n")
 print(survdiff(surv_noncv ~ poor_srh, data = cohort_data_complete))
 
 # Save basic Kaplan-Meier plots
-png("~/r-environment-for-researcher/scripts/plos_analysis/km_illiterate_all.png", 
+png(here("scripts", "plos_analysis", "km_illiterate_all.png"), 
     width = 800, height = 600)
 plot(km_illiterate_all, 
      main = "Kaplan-Meier Survival Curves by Literacy Status (All-cause Mortality)",
@@ -365,7 +369,7 @@ legend("bottomleft", legend = c("Literate", "Illiterate"),
        lty = c(1, 2), col = c("blue", "red"))
 dev.off()
 
-png("~/r-environment-for-researcher/scripts/plos_analysis/km_srh_all.png", 
+png(here("scripts", "plos_analysis", "km_srh_all.png"), 
     width = 800, height = 600)
 plot(km_srh_all, 
      main = "Kaplan-Meier Survival Curves by Self-rated Health Status (All-cause Mortality)",
