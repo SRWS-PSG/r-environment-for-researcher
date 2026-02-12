@@ -39,3 +39,13 @@
 - `.agent/skills/causal-iptw-weightit/SKILL.md` - Guides IPTW with WeightIt, balance diagnostics, and stability checks for causal inference in observational data.
 - `.agent/skills/r-troubleshooting/SKILL.md` - Triages R errors using reproducible steps, environment checks, and function disambiguation.
 - `.agent/skills/data-privacy-handling/SKILL.md` - Handles sensitive data placement, git hygiene, and synthetic-data-first verification.
+- `.agent/skills/code-review-companion/SKILL.md` - Generates verification artifacts (back-translation, traceability, QA report, verification report) when outputting R scripts, enabling human review of AI-generated analysis code.
+
+## Verification Workflow
+
+Rスクリプトを `projects/` 配下に出力する際、`code-review-companion` スキルに従い検証アーティファクトを自動生成する。
+
+1. **Stage A（静的）**: スクリプト出力と同時に逆翻訳レポート・トレーサビリティ表を `output/verification/` に生成
+2. **Stage B（実行後）**: `run_all.R` が `qa_inputs.json` を書き出し、`99_verify_data.R` がQAレポート・検証レポートを生成
+
+詳細は `.agent/skills/code-review-companion/SKILL.md` を参照。
