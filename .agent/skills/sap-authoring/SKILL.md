@@ -22,12 +22,17 @@ analysis-intake → ★ sap-authoring → analysis-hitl-plan → code → code-r
 
 ## 出力ファイル
 
-| ファイル                         | 場所                | 用途                                |
-| -------------------------------- | ------------------- | ----------------------------------- |
-| `statistical_analysis_plan.md` | `{project}/docs/` | SAP 本体                            |
-| `code_review_checklist.md`     | `{project}/docs/` | 付録A: コードレビューチェックリスト |
+| ファイル                         | 場所                                      | 用途                                |
+| -------------------------------- | ----------------------------------------- | ----------------------------------- |
+| `statistical_analysis_plan.md` | `<appDataDir>/brain/<conversation-id>/` | SAP 本体（artifact としてコメント・レビュー可能） |
+| `code_review_checklist.md`     | `{project}/docs/`                        | 付録A: コードレビューチェックリスト |
 
 `{project}` = `projects/<analysis_name>/`
+
+> [!IMPORTANT]
+> `statistical_analysis_plan.md` は `write_to_file` ツールで **`IsArtifact: true`**, **`ArtifactType: "other"`** として出力すること。
+> これによりユーザーが UI 上でコメント・レビューを行える。
+> レビュー・承認完了後、確定版を `{project}/docs/` にコピーする。
 
 ## 作成手順
 
@@ -53,7 +58,12 @@ SAP 内に Decision log セクションを設け、今後の計画変更を記�
 
 ### Step 5: レビュー・承認
 
-SAP をユーザーに提示し、版数・承認者を記録する。
+SAP を artifact としてユーザーに提示し（`notify_user` で `PathsToReview` に指定）、版数・承認者を記録する。
+ユーザーは artifact 上でコメントを付けてフィードバックできる。
+
+### Step 6: 確定版のコピー
+
+レビュー完了・承認後、artifact の `statistical_analysis_plan.md` を `{project}/docs/statistical_analysis_plan.md` にコピーし、プロジェクト内に確定版を保存する。
 
 ---
 
