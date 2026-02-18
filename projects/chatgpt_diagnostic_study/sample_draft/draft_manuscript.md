@@ -4,7 +4,7 @@
 
 ### Study Design and Setting
 
-We conducted a cross-sectional study to evaluate the diagnostic accuracy of ChatGPT (OpenAI, San Francisco, CA) using a dataset of clinical case vignettes. The study was conducted in [Insert Month/Year] using the ChatGPT-3.5 model.
+We conducted a cross-sectional study to evaluate the diagnostic accuracy of ChatGPT (OpenAI, San Francisco, CA) using a dataset of clinical case vignettes. The study was conducted in [Insert Month/Year] using the ChatGPT-3.5 model[@Youe085863;@Bean2026-zj].
 
 ### Participants
 
