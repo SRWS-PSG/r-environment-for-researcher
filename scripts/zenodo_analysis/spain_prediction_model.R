@@ -6,6 +6,10 @@ library(tidyverse)
 library(forecast)
 library(lubridate)
 library(ggplot2)
+library(here)
+
+# Set seed for reproducibility
+set.seed(123)
 
 # Set working directory and file path
 data_path <- "~/zenodo_data/1.4.EU.UNIPV.ECDC_Hospital_ICU.1.csv"

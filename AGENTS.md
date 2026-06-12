@@ -1,84 +1,43 @@
 # AIアシスタント向けガイド（臨床疫学R環境）
 
-このリポジトリは、臨床疫学研究でよく使う統計解析をRで再現可能に実行するための環境と例を提供します。
+> [!NOTE]
+> このファイルは AI 向けの設定ファイルです。人間の利用者は [README.md](README.md) をご覧ください。
 
-この `AGENTS.md` は、**統計初心者がAIと一緒に解析を進める**ときに破綻しにくいよう、最低限のガードレール（確認事項・禁止事項・既定の進め方）をまとめたものです。
+このリポジトリは、臨床疫学研究でよく使う統計解析をRで再現可能に実行するための環境と例を提供します。
+このファイルは概要とスキルへの導線のみを記載します。詳細な手順・ガードレールは `.agent/skills/` を参照してください。
 
 > [!IMPORTANT]
-
-> AIは「統計的に重要な判断」を勝手に確定しないでください。選択肢とメリット・デメリットを示し、**ユーザーの意図（研究目的・デザイン・推定対象）を確認**して進めます。
+>
+> AIは統計的に重要な判断を勝手に確定しないこと。選択肢とメリット・デメリットを示し、ユーザーの意図を確認して進める。
 
 ## リポジトリ構造（よく触る場所）
 
--`principles/`：臨床疫学研究の統計原則（最重要）
-
--`docs/`：環境・使い方・注意点・トラブルシューティング
-
--`scripts/`：解析スクリプトと実例（`zenodo_analysis/`, `plos_analysis/` など）
-
--`data/`：サンプル/公開データ置き場（機密データは置かない）
+- `principles/`
+- `docs/`
+- `scripts/`
+- `data/`
+- `projects/`
 
 ## まず参照するドキュメント（優先順）
 
-1.`principles/compiled_principles.md`（推定値+CI、欠測、二値化回避、多重比較、クラスタリング等）
-
-2.`docs/r_usage_examples.md`（代表的な解析の形）
-
-3.`docs/iptw_note.md`（`iptw`ではなく `WeightIt` を使う理由と注意）
-
-4.`docs/troubleshooting.md`（環境・パッケージ・実行エラーの対処）
-
-5.`docs/summary.md`, `docs/r_environment_setup.md`, `docs/r_update_summary.md`（全体像と注意点）
+1. `principles/compiled_principles.md`
+2. `docs/r_usage_examples.md`
+3. `docs/iptw_note.md`
+4. `docs/troubleshooting.md`
+5. `docs/summary.md`
+6. `docs/r_environment_setup.md`
+7. `docs/r_update_summary.md`
 
 > [!NOTE]
+>
+> コマンド例はリポジトリ直下からの相対パスで記載しているため、必要に応じてカレントディレクトリをリポジトリのルートに合わせる。
 
-> 一部ドキュメントに `~/statistical_principles/...` のような古いパス表記が出る場合は、基本的にこのリポジトリ内のパス（例：`scripts/...`）に読み替えてください。
+## Skills (Antigravity)
 
-## Human-in-the-loop 計画の立て方（必須）
+このリポジトリでは、**13本のコアスキル**を `Core Workflow / Cross-cutting Controls / Method Skill` に分けて管理する。
+`delegate-to-codex` はコア分析スキルではなく、補助的な Utility として扱う。
 
-解析計画は「AIが勝手に進めない」ための**合意文書**です。以下を必ず明記し、節目ごとにユーザー確認を取ってから実装へ進みます。
-
-### 1) 計画に必ず書く合意ポイント
-
--**データ辞書**：実データの `names()` / `str()` を確認し、論文表記との**対応表**を作る（例：MBP=MAP、RRT=CRRT）。
--**主要変数定義**：アウトカムのイベント・観察時間・検閲定義、参照カテゴリ、単位・変換（例：BMI区分、中心化）。
--**モデル仕様**：使う共変量・除外ルール（例：VIF閾値、SAPSIIの扱い）を**式として**明記。
--**出力仕様**：ファイル名と形式（PNG+PDF）、表の列名・並び順を明記。
-
-### 2) ユーザー確認ゲート（HITL）
-
-- Gate A: データ辞書と対応表を提示 → ユーザー承認。
-- Gate B: 主要変数定義（特に生存時間・参照カテゴリ）を提示 → 承認。
-- Gate C: 解析モデル（式・除外ルール）を提示 → 承認。
-- Gate D: 期待する出力一覧（表/図/ファイル名）を提示 → 承認。
-
-### 3) 小さな検証を先に
-
-- まず **小サンプル**または **最小構成**で動作確認（変数名・式・出力が一致するか）。
-- 基本指標（件数、イベント数、主要割合）を**計画値/論文値**と比較し、差分を報告。
-
-### 4) 差分が出たら計画を更新
-
-- データ辞書不一致やモデル仕様変更が必要なら、**計画の差分を明示**して再承認を取る。
-- `options(warn = -1)` のような**警告抑制は原則しない**（必要なら一時的にし、理由と影響を記録）。
-
-## 統計初心者向け：解析ガードレール
-
-### 1) 解析依頼テンプレ（最初にユーザーへ確認）
-
-ユーザーの回答が揃うほど、無駄なやり直しと誤解が減ります。最低限、以下を確認してください。
-
-**研究の目的**
-
-- 何を知りたい？（記述 / 予後因子 / 予測 / 因果効果 / 探索）
-- 結果をどう使う？（論文、院内報告、意思決定の補助など）
-
-**研究デザイン**
-
-- 観察研究（コホート/症例対照/横断）か、介入か
-- データの単位（患者/入院/受診/測定）と、独立性（同一患者の繰り返し測定・施設クラスタ等）
-
-**変数定義（最重要）**
+### Core Workflow
 
 - アウトカム（型：連続/二値/カウント/時間-to-イベント、測定タイミング、検閲の定義）
 - 曝露/介入（群の定義、開始時点、時間依存の有無）
@@ -155,59 +114,91 @@
 
 > [!IMPORTANT]
 
-> 図は **PNG(300dpi)** と **PDF(ベクター)** の両方で保存すること。
+### Cross-cutting Controls
 
-推奨：`ggsave()` を2回呼ぶ（同じ幅・高さ・テーマで統一）。保存先は各解析フォルダ配下。
+- `analysis-guardrails`
+- `reproducibility-standards`
+- `data-privacy-handling`
+- `tdd-testthat`
+- `r-troubleshooting`
 
-## コーディング規約
+### Method Skill
 
--**スタイル**：tidyverse style guide（snake_case、パイプは `|>` または `%>%` のどちらかに統一）
+- `causal-iptw-weightit`
 
--**コメント**：日本語（高校生にも分かる、短い言葉）
+### Utility
 
--**再現性**：乱数シード、主要パッケージ、必要なら `sessionInfo()` を残す
+- `delegate-to-codex`
 
--**外部依存**：新しいパッケージ追加が必要なら先に相談（ネットワーク制限の可能性がある）
+### スキル一覧
 
--**パッケージ**：最低限 `tidyverse`, `ggplot2`, `dplyr`, `gtsummary`, `WeightIt` は利用前提（`scripts/verify_packages.R`）。`docs/r_usage_examples.md` の追加パッケージは環境に無いことがあるため、代替案提示かインストール可否の確認を行う
+#### Core Workflow
 
-- **スクリプトの整理**（重要）：試行錯誤の過程で一時的なファイルや別バージョンのスクリプト（例: `_v2`, `_simple` など）が作成された場合、タスク完了時に必ずこれらを整理・削除する。最終的に正しく動作するコードのみを残し、実行順序が分かるようにファイル名を連番で統一する（`01_...`, `02_...`）。
+- `.agent/skills/analysis-intake/SKILL.md` - Collects study goals, design, variables, missingness, reporting needs, and open decisions before planning starts.
+- `.agent/skills/sap-authoring/SKILL.md` - Converts confirmed intake information into a Statistical Analysis Plan (SAP) and review checklist.
+- `.agent/skills/analysis-hitl-plan/SKILL.md` - Converts an approved SAP into a Gate-based implementation plan with `G<gate>-<seq>` IDs.
+- `.agent/skills/environment-setup/SKILL.md` - Establishes the executable R environment, package availability, paths, and Windows-safe runtime conventions.
+- `.agent/skills/data-wrangling/SKILL.md` - Implements Gate 0B data import, type checks, missingness diagnosis, and cleaning rules.
+- `.agent/skills/analysis-implementation/SKILL.md` - Maps an approved Gate plan into `projects/<analysis_name>/` structure and numbered scripts.
+- `.agent/skills/code-review-companion/SKILL.md` - Generates verification artifacts (back-translation, traceability, QA report, verification report) for code review.
 
-## ファイル命名規則（推奨）
+#### Cross-cutting Controls
 
-| カテゴリ | パターン | 例 |
+- `.agent/skills/analysis-guardrails/SKILL.md` - Applies non-negotiable statistical rules and enforcement logic across analyses.
+- `.agent/skills/reproducibility-standards/SKILL.md` - Defines naming, output, style, and session-recording conventions for reproducibility.
+- `.agent/skills/data-privacy-handling/SKILL.md` - Handles sensitive data placement, git hygiene, and synthetic-data-first verification.
+- `.agent/skills/tdd-testthat/SKILL.md` - Defines `testthat`-based TDD workflow, fixtures, and test file naming for custom R functions.
+- `.agent/skills/r-troubleshooting/SKILL.md` - Triages R errors with reproducible steps, environment checks, and function disambiguation.
 
-|---------|---------|-----|
+#### Method Skill
 
-| データ処理 | `[番号]_[動詞]_data.R` | `01_import_data.R`, `02_clean_data.R` |
+- `.agent/skills/causal-iptw-weightit/SKILL.md` - Owns IPTW-specific estimand, weighting, balance, and stability guidance using `WeightIt`.
 
-| 解析 | `[番号]_[解析種類]_analysis.R` | `03_descriptive_analysis.R` |
+#### Utility
 
-| 可視化 | `[番号]_create_[対象].R` | `05_create_figures.R` |
+- `.agent/skills/delegate-to-codex/SKILL.md` - Launches OpenAI Codex CLI with context from the current session to delegate coding tasks.
 
-| レポート | `[番号]_generate_report.R` | `06_generate_report.R` |
+## スキル早引き表（初学者向け）
 
-| ユーティリティ | `utils_[機能].R` | `utils_helper_functions.R` |
+「どんな言葉で話しかけるとどのスキルが動くか」の対照表です。
 
-| 出力図（PNG） | `[対象]_[種類].png` | `survival_curve.png` |
+| 話しかけ方の例 | 呼び出されるスキル |
+|---|---|
+| 「研究の目的は〜、デザインは〜」「変数を整理したい」 | `analysis-intake` |
+| 「SAP を作りたい」「解析計画を文書化して」 | `sap-authoring` |
+| 「実装計画を立てて」「Gate に分けて」 | `analysis-hitl-plan` |
+| 「R環境を確認して」「パッケージが入っているか調べて」 | `environment-setup` |
+| 「データを読み込んで」「欠損を確認して」「型を整えて」 | `data-wrangling` |
+| 「Table 1 を作って」「回帰を実装して」「解析スクリプトを書いて」 | `analysis-implementation` |
+| 「コードをレビューして」「SAP との整合を確認して」 | `code-review-companion` |
+| 「エラーが出た」「パッケージが読み込めない」 | `r-troubleshooting` |
+| 「因果関係を言いたい」「〜が〜を引き起こす、と書いていい？」 | `analysis-guardrails`（自動介入） |
+| 「IPTWを使いたい」「重み付けの診断をして」 | `causal-iptw-weightit` |
+| 「再現可能にしたい」「`renv` を使いたい」 | `reproducibility-standards` |
+| 「患者データを扱う」「個人情報が含まれている」 | `data-privacy-handling` |
+| 「テストを書きたい」「関数の動作を自動確認したい」 | `tdd-testthat` |
 
-| 出力図（PDF） | `[対象]_[種類].pdf` | `survival_curve.pdf` |
+## Workflow Notes
 
-## 新規解析追加のワークフロー（推奨）
+### Planning Workflow
 
-1.`scripts/<analysis_name>/` を作成（例：`scripts/new_analysis/`）
+1. **情報収集**: `analysis-intake` で事実と未確定事項を収集する
+2. **SAP 文書化**: `sap-authoring` で `{project}/docs/statistical_analysis_plan.md` を作成する
+3. **Gate 化**: `analysis-hitl-plan` で `analysis_plan.md` に `G<gate>-<seq>` ID を付与する
 
-2.`00_readme.md`（目的・データ・アウトカム・主要解析）か `report.md` を最初に作る
+### Execution Workflow
 
-3. 小さく動く `01_import_data.R` → `02_clean_data.R` → `03_descriptive_analysis.R` の順に増やす
-4. 出力（表/図/中間CSV）は同フォルダ内に保存し、ファイル名で内容が分かるようにする
+1. **環境確認**: `environment-setup` で Gate 0A を実施する
+2. **データ整備**: `data-wrangling` で Gate 0B を実装する
+3. **コード展開**: `analysis-implementation` で `projects/<analysis_name>/scripts/` に落とし込む
+4. **検証**: `code-review-companion` で SAP → Plan → Code のトレーサビリティを検証する
 
-## データ取り扱い（機密・個人情報）
+### Verification Workflow
 
-- 機密データはコミットしない。必要なら `data/private/` のようなフォルダに置き、`.gitignore` に追加する。
-- 実データを前提にコードを書く前に、**サンプル（合成）データで動作確認**してから本番に適用する。
+Rスクリプトを `projects/` 配下に出力する際、`code-review-companion` スキルに従い検証アーティファクトを生成する。
 
-## 最低限の禁止事項
+1. **Stage A（静的）**: スクリプト出力と同時に逆翻訳レポート・トレーサビリティ表を `output/verification/` に生成
+2. **Stage B（実行後）**: `run_all.R` が `qa_inputs.json` を書き出し、`99_verify_data.R` が QA レポート・検証レポートを生成
 
 - 実行していない解析結果（数値・p値・図）を捏造しない
 - 観察研究で因果を断定しない（言い回しと前提を明記）

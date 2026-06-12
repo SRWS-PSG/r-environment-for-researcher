@@ -4,7 +4,7 @@
 
 ### R本体
 - 旧バージョン: R 4.1.2
-- 新バージョン: R 4.4.3 (2025-02-28) "Trophy Case"
+- 新バージョン: R 4.5.2
 - アップデート方法: システムパッケージマネージャー経由
 
 ### インストール済みパッケージ
@@ -25,17 +25,17 @@
 ## 作成・更新したファイル
 
 ### 解析スクリプト
-- `~/statistical_principles/updated_example.R` - すべてのパッケージを使用した包括的な解析例
+- `scripts/updated_example.R` - すべてのパッケージを使用した包括的な解析例
 
 ### ドキュメント
-- `~/statistical_principles/r_update_summary.md` - このアップデート報告書
-- `~/statistical_principles/troubleshooting.md` - トラブルシューティングガイド
+- `docs/r_update_summary.md` - このアップデート報告書
+- `docs/troubleshooting.md` - トラブルシューティングガイド
 
 ## 使用方法
 
 ### 例示スクリプトの実行
 ```bash
-Rscript ~/statistical_principles/updated_example.R
+Rscript scripts/updated_example.R
 ```
 
 ### スクリプトの内容
@@ -46,4 +46,4 @@ Rscript ~/statistical_principles/updated_example.R
 - 縦断データ解析（tidyverseとgtsummaryを使用）
 
 ## まとめ
-Rのバージョンを4.4.3にアップデートし、要求されたすべてのパッケージ（tidyverse、ggplot2、dplyr、gtsummary、WeightIt）のインストールに成功しました。これにより、臨床疫学研究のための統計解析環境が整いました。
+Rのバージョンを4.5.2にアップデートし、要求されたすべてのパッケージ（tidyverse、ggplot2、dplyr、gtsummary、WeightIt）のインストールに成功しました。これにより、臨床疫学研究のための統計解析環境が整いました。
