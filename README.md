@@ -1,7 +1,36 @@
 # 臨床疫学研究のためのR環境
 
+> **医学教育者向け fork (MMed 2026-05-13 ハンズオン用)**
+> 親リポ [SRWS-PSG/r-environment-for-researcher](https://github.com/SRWS-PSG/r-environment-for-researcher) に、医学教育研究の練習プロジェクト [`projects/medical_education_admissions/`](projects/medical_education_admissions/) を追加した派生版です。
+> 当日のハンズオンはそちらを使います (Table 1 / t検定 / χ² / 重回帰 を AI と Rmd で書く)。
+
 本リポジトリは、AI（Antigravity / Gemini / Claudeなど）と一緒に臨床研究の統計解析を行うための環境です。
 「AIに解析計画書を書かせる」「AIにRコードを書かせてコードをレビューする」といった作業をスムーズに行うための設定ファイルやデータがあらかじめ用意されています。
+
+---
+
+## 今すぐ始める
+
+**ステップ 1 ── パッケージを揃える（初回のみ）**
+
+RStudio のコンソールで以下を実行してください：
+
+```r
+renv::restore()
+```
+
+**ステップ 2 ── 演習フォルダを選ぶ**
+
+| 回 | フォルダ | 内容 |
+|----|----------|------|
+| Day 1 | `projects/medical_education_admissions/` | 後ろ向きコホート・重回帰（Table 1 / t検定 / χ² / 重回帰） |
+| Day 2 | `projects/medical_education_panel/` | 準実験法・ITS / DID（カリキュラム改革の効果評価） |
+
+**ステップ 3 ── README を開く**
+
+選んだフォルダ内の `README.md` を開き、手順に従ってください。
+
+---
 
 ## どこに何があるか（ディレクトリ構造）
 
