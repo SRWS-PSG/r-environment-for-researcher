@@ -1,8 +1,8 @@
 # 臨床疫学研究のためのR環境
 
-> **医学教育者向け fork (MMed 2026-05-13 ハンズオン用)**
-> 親リポ [SRWS-PSG/r-environment-for-researcher](https://github.com/SRWS-PSG/r-environment-for-researcher) に、医学教育研究の練習プロジェクト [`projects/medical_education_admissions/`](projects/medical_education_admissions/) を追加した派生版です。
-> 当日のハンズオンはそちらを使います (Table 1 / t検定 / χ² / 重回帰 を AI と Rmd で書く)。
+> **日本臨床麻酔学会 第46回大会 ハンズオンセミナー（2026-11-13）第3部の方へ**
+> 今日使うのは [`projects/chatgpt_diagnostic_study/`](projects/chatgpt_diagnostic_study/) です。下の「演習フォルダを選ぶ」の表は別の回のものなので、今日は見なくて大丈夫です。
+> 事前にクローンした人は、Source Control から Fetch（または Pull）して最新にしてください。
 
 本リポジトリは、AI（Antigravity / Gemini / Claudeなど）と一緒に臨床研究の統計解析を行うための環境です。
 「AIに解析計画書を書かせる」「AIにRコードを書かせてコードをレビューする」といった作業をスムーズに行うための設定ファイルやデータがあらかじめ用意されています。
@@ -25,6 +25,7 @@ renv::restore()
 |----|----------|------|
 | Day 1 | `projects/medical_education_admissions/` | 後ろ向きコホート・重回帰（Table 1 / t検定 / χ² / 重回帰） |
 | Day 2 | `projects/medical_education_panel/` | 準実験法・ITS / DID（カリキュラム改革の効果評価） |
+| 臨床麻酔学会 2026-11-13 | `projects/chatgpt_diagnostic_study/` | 診断精度研究の再現（解析計画書 → コード → 図表 → 確かめる） |
 
 **ステップ 3 ── README を開く**
 
